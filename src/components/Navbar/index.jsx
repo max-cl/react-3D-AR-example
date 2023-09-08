@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
     return (
         <nav id="header" className="top-0 z-30 w-full py-1">
@@ -20,35 +22,35 @@ const Navbar = () => {
                     <nav>
                         <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
                             <li>
-                                <a
+                                <Link
                                     className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                                    href="#"
+                                    to="/"
                                 >
                                     Shop
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
+                                <Link
                                     className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                                    href="#"
+                                    to="#"
                                 >
                                     About
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </nav>
                 </div>
 
                 <div className="order-1 md:order-2">
-                    <a
+                    <Link
                         className="flex items-center text-2xl font-bold tracking-tighter text-gray-900 no-underline uppercase hover:no-underline"
-                        href="#"
+                        to="/"
                     >
                         <div className="mr-2">
-                            <img width={28} height={28} src="/clothes-logo.svg" alt="Logo shop" />
+                            <img width={28} height={28} src="/shop-logo.svg" alt="Logo shop" />
                         </div>
                         Boutique
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="flex items-center order-2 md:order-3" id="nav-content">

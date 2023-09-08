@@ -1,14 +1,12 @@
 import React, { useRef, createRef } from "react";
 
-import Viewer from "./components/Viewer";
-import Navbar from "./components/Navbar";
-import ContainerPage from "../../components/ContainerPage";
+import Navbar from "../../components/Navbar";
 import HeroSection from "./components/HeroSection";
 import ProductsNavbar from "./components/ProductsNavbar";
 import Products from "./components/Products";
-import Footer from "./components/Footer";
+import Footer from "../../components/Footer";
 
-import { PRODUCTS } from "./data/index.js";
+import { PRODUCTS } from "../../data/index.js";
 
 const ShopFeature = () => {
     const modelRef = useRef(null);
@@ -31,7 +29,7 @@ const ShopFeature = () => {
             <HeroSection changeModelColor={changeModelColor} ref={modelRef} />
 
             {/*  PRODUCTS */}
-            <section className="py-8 bg-white">
+            <section className="py-8 bg-white" id="section-products">
                 <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
                     <ProductsNavbar />
 
@@ -46,8 +44,9 @@ const ShopFeature = () => {
                             rotY={product.rotY}
                             productName={product.productName}
                             productPrice={product.productPrice}
+                            productID={product.id}
                             ref={productsRef.current[index]}
-                            key={index}
+                            key={product.id}
                         />
                     ))}
                 </div>

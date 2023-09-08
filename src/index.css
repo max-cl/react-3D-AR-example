@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: "Roboto Mono", monospace;
 }
@@ -106,5 +110,9 @@ body {
 
     #button-load-model:focus-visible {
         outline: 1px solid #000000;
+    }
+
+    .remove-scroll {
+        overflow: hidden;
     }
 }

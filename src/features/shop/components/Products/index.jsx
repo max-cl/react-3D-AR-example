@@ -1,10 +1,12 @@
 import { forwardRef } from "react";
 
 import Viewer from "../Viewer";
+import { Link } from "react-router-dom";
 
 const Products = forwardRef(
-    ({ srcModel, srcPoster, rotX, rotY, productName, modelLoaded, productPrice, srcModelIOS }, ref) => {
+    ({ srcModel, srcPoster, rotX, rotY, productName, modelLoaded, productPrice, srcModelIOS, productID }, ref) => {
         const modelRef = ref;
+
         return (
             <div className="flex flex-col w-full p-6 md:p-2 xl:p-4 md:w-1/3 xl:w-1/4">
                 <div className="w-full h-[400px] bg-slate-50">
@@ -20,7 +22,7 @@ const Products = forwardRef(
                     />
                 </div>
                 <div className="flex items-center justify-between pt-3">
-                    <p className="">{productName}</p>
+                    <p>{productName}</p>
                     <svg
                         className="w-6 h-6 text-gray-500 fill-current hover:text-black"
                         xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +32,9 @@ const Products = forwardRef(
                     </svg>
                 </div>
                 <p className="pt-1 text-gray-900">{`£ ${productPrice}`}</p>
+                <Link className="pt-1 font-thin text-gray-900 underline" to={`/${productID}`}>
+                    See more
+                </Link>
             </div>
         );
     }

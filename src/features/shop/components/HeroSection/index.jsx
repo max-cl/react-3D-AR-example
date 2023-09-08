@@ -29,7 +29,7 @@ const HeroSection = forwardRef(({ changeModelColor }, ref) => {
                 <div className="absolute z-50 flex items-center space-x-4 bottom-8 right-16">
                     <a
                         className="inline-block text-sm font-bold leading-relaxed tracking-widest text-white no-underline uppercase cursor-pointer"
-                        href="#"
+                        href="#section-products"
                     >
                         Discover
                     </a>
