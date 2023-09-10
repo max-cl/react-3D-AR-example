@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ContainerPage from "../../components/ContainerPage";
 import Viewer from "./components/Viewer";
+import ShoeSizeOptions from "./components/ShoeSizeOptions";
 
 import { PRODUCTS } from "../../data";
-import ShoeSizeOptions from "./components/ShoeSizeOptions";
 
 const ProductDetailFeature = () => {
     const [open, setOpen] = useState(false);
@@ -28,9 +28,10 @@ const ProductDetailFeature = () => {
     return (
         <div className="max-w-[1440px] bg-white work-sans relative">
             {/* Modal (Shoes sizes) */}
-            {open && product.sizes ? (
-                <ShoeSizeOptions product={product} handleEnableScroll={handleEnableScroll} />
+            {product.sizes ? (
+                <ShoeSizeOptions product={product} handleEnableScroll={handleEnableScroll} open={open} />
             ) : null}
+
             {/* NAVBAR */}
             <Navbar />
 

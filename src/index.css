@@ -115,4 +115,16 @@ body {
     .remove-scroll {
         overflow: hidden;
     }
+
+    /* Modal */
+    .modal {
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+        pointer-events: none;
+    }
+
+    .modal.show {
+        opacity: 1;
+        pointer-events: visible;
+    }
 }
