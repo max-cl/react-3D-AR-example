@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import PropTypes from "prop-types";
 
 import { useScreenSize } from "../../../../hooks/useScreenSize";
 import Viewer from "../Viewer";
@@ -83,5 +84,11 @@ const HeroSection = forwardRef(({ changeModelColor }, ref) => {
         </div>
     );
 });
+
+HeroSection.displayName = "HeroSection";
+
+HeroSection.propTypes = {
+    changeModelColor: PropTypes.func.isRequired,
+};
 
 export default HeroSection;

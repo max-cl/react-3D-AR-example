@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import PropTypes from "prop-types";
 
 import Viewer from "../Viewer";
 import { Link } from "react-router-dom";
@@ -39,5 +40,19 @@ const Products = forwardRef(
         );
     }
 );
+
+Products.propTypes = {
+    rotX: PropTypes.number.isRequired,
+    rotY: PropTypes.number.isRequired,
+    srcModel: PropTypes.string.isRequired,
+    srcModelIOS: PropTypes.string.isRequired,
+    srcPoster: PropTypes.string.isRequired,
+    productName: PropTypes.string.isRequired,
+    modelLoaded: PropTypes.bool.isRequired,
+    productPrice: PropTypes.number.isRequired,
+    productID: PropTypes.string.isRequired,
+};
+
+Products.displayName = "Products";
 
 export default Products;

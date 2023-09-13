@@ -1,10 +1,8 @@
 import { useEffect, forwardRef, useRef, useState, useCallback } from "react";
-
-import { useScreenSize } from "../../../../hooks/useScreenSize";
+import PropTypes from "prop-types";
 
 const Viewer = forwardRef(
-    ({ rotX, rotY, srcModel, srcModelIOS, srcPoster, setCursorFn = false, modelLoaded = false }, ref) => {
-        const { screenWidth } = useScreenSize();
+    ({ rotX, rotY, srcModel, srcModelIOS, srcPoster = "", setCursorFn = false, modelLoaded = false }, ref) => {
         const modelRef = ref;
         const containerProgressBarRef = useRef(null);
         const progressBarRef = useRef(null);
@@ -12,7 +10,7 @@ const Viewer = forwardRef(
         const preLoadedValue = useRef(0);
         const [isModelLoaded, setIsModelLoaded] = useState(modelLoaded);
 
-        const handleMouseLeave = () => {
+        const handleMouseLeave = useCallback(() => {
             if (!modelRef.current) return;
 
             let currentRotX;
@@ -44,82 +42,90 @@ const Viewer = forwardRef(
             };
 
             requestAnimationFrame(animate);
-        };
+        }, [modelRef, rotX, rotY]);
 
-        const handleMouseMove = (event) => {
-            if (!modelRef.current) return;
+        const handleMouseMove = useCallback(
+            (event) => {
+                if (!modelRef.current) return;
 
-            const rect = modelRef.current.getBoundingClientRect();
+                const rect = modelRef.current.getBoundingClientRect();
 
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
+                const mouseX = event.clientX - rect.left;
+                const mouseY = event.clientY - rect.top;
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
 
-            // Calculate the difference between the center of the model-viewer and the mouse position
-            const diffX = (mouseX - centerX) / centerX;
-            const diffY = (mouseY - centerY) / centerY;
+                // Calculate the difference between the center of the model-viewer and the mouse position
+                const diffX = (mouseX - centerX) / centerX;
+                const diffY = (mouseY - centerY) / centerY;
 
-            // Convert the difference in screen space to a rotation in degrees
-            const sensitivity = 60;
+                // Convert the difference in screen space to a rotation in degrees
+                const sensitivity = 60;
 
-            // Adjust the base azimuth and polar angles by the calculated differences
-            const finalRotX = rotX + diffY * -sensitivity; // Vertical mouse movement affects rotation around the X-axis
-            const finalRotY = rotY - diffX * sensitivity; // Horizontal mouse movement affects rotation around the Y-axis
+                // Adjust the base azimuth and polar angles by the calculated differences
+                const finalRotX = rotX + diffY * -sensitivity; // Vertical mouse movement affects rotation around the X-axis
+                const finalRotY = rotY - diffX * sensitivity; // Horizontal mouse movement affects rotation around the Y-axis
 
-            modelRef.current.setAttribute("camera-orbit", `${finalRotY}deg ${finalRotX}deg auto`);
-        };
+                modelRef.current.setAttribute("camera-orbit", `${finalRotY}deg ${finalRotX}deg auto`);
+            },
+            [modelRef, rotX, rotY]
+        );
 
-        const handleProgressBar = useCallback((event) => {
-            if (!modelRef.current) return;
-            if (!progressBarRef.current || !containerProgressBarRef.current) return;
+        const handleProgressBar = useCallback(
+            (event) => {
+                if (!modelRef.current) return;
+                if (!progressBarRef.current || !containerProgressBarRef.current) return;
 
-            let loaded = 0;
-            const { totalProgress } = event.detail;
-            loaded = (Math.round(totalProgress * 10) / 10) * 100;
+                let loaded = 0;
+                const { totalProgress } = event.detail;
+                loaded = (Math.round(totalProgress * 10) / 10) * 100;
 
-            if (loaded > preLoadedValue.current) {
-                progressBarRef.current.textContent = `${loaded}%`;
-                preLoadedValue.current = loaded;
-            }
+                if (loaded > preLoadedValue.current) {
+                    progressBarRef.current.textContent = `${loaded}%`;
+                    preLoadedValue.current = loaded;
+                }
 
-            if (loaded === 100) {
-                progressBarRef.current.style = "display:none";
-                containerProgressBarRef.current.style = "opacity: 0; z-index: -1";
-                preLoadedValue.current = 0;
-            }
-        }, []);
+                if (loaded === 100) {
+                    progressBarRef.current.style = "display:none";
+                    containerProgressBarRef.current.style = "opacity: 0; z-index: -1";
+                    preLoadedValue.current = 0;
+                }
+            },
+            [modelRef]
+        );
 
         const handleError = (event) => {
             throw new Error("Error trying to load the model. " + event.detail.sourceError.message);
         };
 
         useEffect(() => {
-            if (!modelRef.current) return;
+            const modelNode = modelRef.current;
 
-            modelRef.current.addEventListener("error", handleError);
+            if (!modelNode) return;
 
-            modelRef.current.addEventListener("progress", handleProgressBar);
+            modelNode.addEventListener("error", handleError);
+
+            modelNode.addEventListener("progress", handleProgressBar);
 
             if (!setCursorFn) {
                 return;
             }
-            modelRef.current.addEventListener("mousemove", handleMouseMove);
-            modelRef.current.addEventListener("mouseleave", handleMouseLeave);
+            modelNode.addEventListener("mousemove", handleMouseMove);
+            modelNode.addEventListener("mouseleave", handleMouseLeave);
 
             return () => {
-                if (!modelRef.current) return;
-                modelRef.current?.removeEventListener("error", handleError);
-                modelRef.current?.removeEventListener("progress", handleProgressBar);
+                if (!modelNode) return;
+                modelNode?.removeEventListener("error", handleError);
+                modelNode?.removeEventListener("progress", handleProgressBar);
 
                 if (!setCursorFn) {
                     return;
                 }
-                modelRef.current?.removeEventListener("mousemove", handleMouseMove);
-                modelRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+                modelNode?.removeEventListener("mousemove", handleMouseMove);
+                modelNode?.removeEventListener("mouseleave", handleMouseLeave);
             };
-        }, [handleProgressBar, handleMouseMove, handleMouseLeave]);
+        }, [handleProgressBar, handleMouseMove, handleMouseLeave, modelRef, setCursorFn]);
 
         return (
             <>
@@ -184,5 +190,17 @@ const Viewer = forwardRef(
         );
     }
 );
+
+Viewer.propTypes = {
+    rotX: PropTypes.number.isRequired,
+    rotY: PropTypes.number.isRequired,
+    srcModel: PropTypes.string.isRequired,
+    srcModelIOS: PropTypes.string.isRequired,
+    srcPoster: PropTypes.string,
+    setCursorFn: PropTypes.bool,
+    modelLoaded: PropTypes.bool,
+};
+
+Viewer.displayName = "Viewer";
 
 export default Viewer;

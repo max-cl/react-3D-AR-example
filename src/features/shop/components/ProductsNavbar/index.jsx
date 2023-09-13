@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProductsNavbar = () => {
     return (
         <nav id="store" className="top-0 z-30 w-full px-6 py-1">

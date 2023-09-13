@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { toast } from "react-hot-toast";
 
 const ShoeSizeOptions = ({ product, handleEnableScroll, open }) => {
@@ -38,6 +39,14 @@ const ShoeSizeOptions = ({ product, handleEnableScroll, open }) => {
             </div>
         </div>
     );
+};
+
+ShoeSizeOptions.propTypes = {
+    product: PropTypes.shape({
+        sizes: PropTypes.array.isRequired,
+    }).isRequired,
+    handleEnableScroll: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
 };
 
 export default ShoeSizeOptions;
