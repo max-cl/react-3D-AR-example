@@ -74,7 +74,7 @@ const Viewer = forwardRef(({ rotX, rotY, srcModel, srcModelIOS }, ref) => {
                 ref={modelRef}
             >
                 <span slot="ar-button" id="ar-button">
-                    <img src="./ar-logo.svg" width={24} height={24} alt="ar logo" />
+                    <img src="./ar-logo.svg" width={24} height={24} alt="ar logo" loading="lazy" />
                 </span>
                 <div ref={containerProgressBarRef} id="container-progress-bar" style={{ backgroundColor: "#000000" }}>
                     <span ref={progressBarRef} id="custom-progress-bar">
